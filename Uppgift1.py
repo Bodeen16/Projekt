@@ -9,7 +9,7 @@ dydt = v(t)*np.sin(th(t))
 
 
 Ekvation 2: 
-v(t) = vR(t) + vL(t))/2
+v(t) = (vR(t) + vL(t))/2
 
 
 Ekvation 3: 
