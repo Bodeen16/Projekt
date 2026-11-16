@@ -1,3 +1,3 @@
 """
-Lösningen för uppgift 1 finns på separat papper. 
+Lösningen för uppgiften finns på separat papper. 
 """
