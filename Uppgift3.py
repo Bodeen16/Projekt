@@ -72,3 +72,46 @@ plt.plot(x, y)
 plt.axis("equal")
 plt.grid(True)
 plt.show()
+
+
+
+#Uppgift d;
+N = 2
+err_list = []
+h_list = []
+f = lambda t, U: odefun(t, U, b, vL, vR)
+
+while 3200 >= N: 
+    h = (tf - t0)/N
+    h_list.append(h)
+
+    t, U = forward_euler(f, t0, tf, U0, N)
+    x = U[0, :]
+    y = U[1, :]
+    err = np.abs(np.sqrt((x-xbar)**2 + (y-ybar)**2)- R)
+    err_max = np.max(err)
+    err_list.append(err_max)
+
+    if len(err_list) >= 2:
+        kvot = err_list[-2] / err_list[-1]
+        p = np.log(kvot) / np.log(2)
+        print("N =", N, "kvot =", kvot, "p =", p)
+
+    N = N*2
+
+plt.figure()
+plt.loglog(h_list, err_list)
+plt.loglog(h_list, h_list)
+plt.xlabel("h")
+plt.ylabel("err_max")
+plt.grid()
+plt.show()
+
+# h = (tf - t0)/N, så h halveras alltså när N fördubblas. 
+# I loglog-plotten ligger felet på en rät linje med lutning 1 (d.v.s. p = 1) alltså noggrannhetsordning 1
+# Stämmer dessutom överens med teorin då framåt Euler är en förstaordningsmetod.
+
+
+
+
+
