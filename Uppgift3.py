@@ -81,7 +81,7 @@ err_list = []
 h_list = []
 f = lambda t, U: odefun(t, U, b, vL, vR)
 
-while 3200 >= N: 
+while 1024 >= N: 
     h = (tf - t0)/N
     h_list.append(h)
 
@@ -95,13 +95,12 @@ while 3200 >= N:
     if len(err_list) >= 2:
         kvot = err_list[-2] / err_list[-1]
         p = np.log(kvot) / np.log(2)
-        print("N =", N, "kvot =", kvot, "p =", p)
+        print("Framåt Euler:","N =", N, "kvot =", kvot, "p =", p)
 
     N = N*2
 
 plt.figure()
 plt.loglog(h_list, err_list)
-plt.loglog(h_list, h_list)
 plt.xlabel("h")
 plt.ylabel("err_max")
 plt.grid()
@@ -113,5 +112,67 @@ plt.show()
 
 
 
+#Uppgift e; 
+
+def rk4(f, t0, tf, U0, N):
+
+    h = (tf - t0)/N 
+
+    t = np.zeros(N + 1)
+    U = np.zeros((3, N + 1))
+
+    t[0] = t0
+    U[:, 0] = U0
+
+
+    for j in range(N):
+        t[j+1] = t[j] + h
+
+        k1 = f(t[j], U[:,j])
+        k2 = f(t[j]+h/2, U[:,j]+(h/2)*k1)
+        k3 = f(t[j]+h/2, U[:,j]+(h/2)*k2)
+        k4 = f(t[j]+h, U[:,j]+h*k3)
+        U[:,j+1] = U[:,j] + h*(k1 + 2*k2 + 2*k3 + k4)/6
+
+    return t, U
+
+
+N = 2
+err_list = []
+h_list = []
+f = lambda t, U: odefun(t, U, b, vL, vR)
+
+while 1024 >= N: 
+    h = (tf - t0)/N
+    h_list.append(h)
+
+    t, U = rk4(f, t0, tf, U0, N)
+    x = U[0, :]
+    y = U[1, :]
+    err = np.abs(np.sqrt((x-xbar)**2 + (y-ybar)**2)- R)
+    err_max = np.max(err)
+    err_list.append(err_max)
+
+    if len(err_list) >= 2:
+        kvot = err_list[-2] / err_list[-1]
+        p = np.log(kvot) / np.log(2)
+        print("Runge-Kutta:", "N =", N, "kvot =", kvot, "p =", p)
+
+    N = N*2
+
+plt.figure()
+plt.loglog(h_list, err_list)
+plt.xlabel("h")
+plt.ylabel("err_max")
+plt.grid()
+plt.show()
+
+
+# Vi ser från utskrift och plot att Runge-Kutta har noggrannhetsordning 4 (p = 4), vilket stämmer överens med teorin. 
+# Felet frö RK4 är därmed proportionellt mot h**4 (p = 4), medan felet för Euler är h (p = 1).
+# Detta betyder att Rk4-felet har storleksorndingen h**3 gånger mindre vilket även stämmer vid jämförelse av kvoterna (16/2 = 8 = 2**3).
+
+
+    
 
 
