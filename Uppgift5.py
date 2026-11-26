@@ -56,11 +56,24 @@ for i in range(1, len(x)):
 
 
 #Uppgift b;
+     
 tf= T
+t, U = rk4(f, t0, tf, U0, N)
+
+x = U[0, :]
+y = U[1, :]
+
 n=1
 h = (tf - t0)/N
 A=0
 while n < N:
-    A = A + (x[n]*f(t[n], U[1, n]) - y[n]*f(t[n], U[0,n]))*h
-A=A + (x[0]*f(t[0], U[1, 0]) - y[0]*f(t[0], U[0,0]))*h/2 + (x[N]*f(t[N], U[1, N]) - y[N]*f(t[N], U[0,N]))*h/2
-print("Area:", A)
+    A = A + (x[n]*f(t[n], U[:, n])[1] - y[n]*f(t[n], U[:,n])[0])*h
+    n = n +1
+
+A = A + (x[0] * f(t[0], U[:, 0])[1] - y[0] * f(t[0], U[:, 0])[0]) * h / 2 \
+      + (x[N] * f(t[N], U[:, N])[1] - y[N] * f(t[N], U[:, N])[0]) * h / 2
+
+print("Area:", abs(A) / 2)
+
+#När vi ökar antalet steg kan vi återigen konstatera att de första 6 decimalerna är oförändrade.
+#Arean a blir: 13.546335
