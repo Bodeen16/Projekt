@@ -65,13 +65,13 @@ x = U[0, :]
 y = U[1, :]
 theta = U[2, :]
 
-plt.figure()
+"""plt.figure()
 robot.animate(x, y, theta)
 
 plt.plot(x, y)
 plt.axis("equal")
 plt.grid(True)
-plt.show()
+plt.show()"""
 
 
 
@@ -95,16 +95,16 @@ while 1024 >= N:
     if len(err_list) >= 2:
         kvot = err_list[-2] / err_list[-1]
         p = np.log(kvot) / np.log(2)
-        print("Framåt Euler:","N =", N, "kvot =", kvot, "p =", p)
+        #print("Framåt Euler:","N =", N, "kvot =", kvot, "p =", p)
 
     N = N*2
 
-plt.figure()
+"""plt.figure()
 plt.loglog(h_list, err_list)
 plt.xlabel("h")
 plt.ylabel("err_max")
 plt.grid()
-plt.show()
+plt.show()"""
 
 # h = (tf - t0)/N, så h halveras alltså när N fördubblas. 
 # I loglog-plotten ligger felet på en rät linje med lutning 1 (d.v.s. p = 1) alltså noggrannhetsordning 1
@@ -156,16 +156,16 @@ while 1024 >= N:
     if len(err_list) >= 2:
         kvot = err_list[-2] / err_list[-1]
         p = np.log(kvot) / np.log(2)
-        print("Runge-Kutta:", "N =", N, "kvot =", kvot, "p =", p)
+        #print("Runge-Kutta:", "N =", N, "kvot =", kvot, "p =", p)
 
     N = N*2
 
-plt.figure()
+"""plt.figure()
 plt.loglog(h_list, err_list)
 plt.xlabel("h")
 plt.ylabel("err_max")
 plt.grid()
-plt.show()
+plt.show()"""
 
 
 # Vi ser från utskrift och plot att Runge-Kutta har noggrannhetsordning 4 (p = 4), vilket stämmer överens med teorin. 
