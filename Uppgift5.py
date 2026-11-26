@@ -56,6 +56,11 @@ for i in range(1, len(x)):
 
 
 #Uppgift b;
-     
-   
-
+tf= T
+n=1
+h = (tf - t0)/N
+A=0
+while n < N:
+    A = A + (x[n]*f(t[n], U[1, n]) - y[n]*f(t[n], U[0,n]))*h
+A=A + (x[0]*f(t[0], U[1, 0]) - y[0]*f(t[0], U[0,0]))*h/2 + (x[N]*f(t[N], U[1, N]) - y[N]*f(t[N], U[0,N]))*h/2
+print("Area:", A)
