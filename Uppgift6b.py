@@ -61,30 +61,34 @@ N = 1024
 Area = 20
 tol = 1e-9
 delta = 1e-7
-tf = 36  #36 för a=1.04, 74 för a=1.123
-a_start = 1.04 #startgissning 1.04 & 1.12
+tf1 = 36  #36 för a=1.04, 74 för a=1.123
+tf2 = 74 
+a_start1 = 1.04 #startgissning 1.04 & 1.12
+a_start2 = 1.12
 
 
-a_lös, tf = newtons_metod(a_start, N, Area, tol, delta, tf)
+a_lös1, tf1 = newtons_metod(a_start1, N, Area, tol, delta, tf1)
+a_lös2, tf2 = newtons_metod(a_start2, N, Area, tol, delta, tf2)
+
 
 
 # Räkna fram banan för den hittade lösningen a_lös
-a = a_lös
-J0 = 3 * sp.special.j0(2 * a)
-g = lambda t: a * np.sin(J0 * t)
-vL = lambda t: np.cos(g(t)) ** 2
-vR = lambda t: np.sin(g(t)) ** 2
-f = lambda t, U: odefun(t, U, b, vL, vR)
-U0 = np.array([0, 0, 0])
-t, U = rk4(f, t0, tf, U0, N)
+for a, tf in [(a_lös1, tf1), (a_lös2, tf2)]:
+    J0 = 3 * sp.special.j0(2 * a)
+    g = lambda t: a * np.sin(J0 * t)
+    vL = lambda t: np.cos(g(t)) ** 2
+    vR = lambda t: np.sin(g(t)) ** 2
+    f = lambda t, U: odefun(t, U, b, vL, vR)
+    U0 = np.array([0, 0, 0])
+    t, U = rk4(f, t0, tf, U0, N)
 
-x = U[0, :]
-y = U[1, :]
-theta = U[2, :]
+    x = U[0, :]
+    y = U[1, :]
+    theta = U[2, :]
 
-plt.figure()
-robot.animate(x, y, theta)
-plt.plot(x, y)
-plt.axis("equal")
-plt.grid(True)
-plt.show()
+    plt.figure()
+    plt.plot(x, y)
+    robot.animate(x, y, theta)
+    plt.axis("equal")
+    plt.grid(True)
+    plt.show()
