@@ -64,8 +64,8 @@ N = 1024
 Area = 20
 tol = 1e-9
 delta = 1e-7
-tf1 = 37  #36 för a=1.04, 74 för a=1.123
-tf2 = 74 
+tf1 = 37  #37 för a=1.04, 75 för a=1.123
+tf2 = 75
 a_start1 = 1.04 #startgissning 1.04 & 1.12
 a_start2 = 1.12
 
