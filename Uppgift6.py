@@ -61,7 +61,8 @@ while a <= 1.131:
     A = A + (x[0] * f(t[0], U[:, 0])[1] - y[0] * f(t[0], U[:, 0])[0]) * h / 2 \
         + (x[N] * f(t[N], U[:, N])[1] - y[N] * f(t[N], U[:, N])[0]) * h / 2
 
-    print("Area:", abs(A) / 2, "a:", a, "tf:", tf)
+    print("Area:", abs(A) / 2, "a:", a, "tf:", tf, "N:", N)
     a+=0.001
 
-#Denna beräknings syfte var att ta fram ungefärliga värden på a. Vi kan konstatera att det finns två värden på a där arean blir 20. Båda värdena på a är över 1. 
+#Denna beräknings syfte var att ta fram en "skiss" på hur integralen beter sig efter olika a. Vi kan konstatera att det finns två värden på a där arean blir 20 där både värdena på a är över 1.
+#samt vet vi vad tf är med 14 decimalers säkerhet som är lika i både fallen, samt att N=1024 är rimligt å både fallen
