@@ -14,7 +14,7 @@ while a <= 1.131:
 
 
     t0 = 0 
-    tf = 30
+    tf = 100
 
 
 
@@ -38,10 +38,11 @@ while a <= 1.131:
     x = U[0, :]
     y = U[1, :]
     theta = U[2, :]
-
+    T = None
     for i in range(1, len(x)):
         if x[i-1] < 0 and x[i] >= 0:
             T = t[i - 1] + (0 - x[i - 1]) * (t[i]- t[i -1]) / (x[i] - x[i - 1])
+            break
             #print("Omloppstid (s): ", T , "N =", N)
     
      
@@ -50,6 +51,7 @@ while a <= 1.131:
 
     x = U[0, :]
     y = U[1, :]
+    theta = U[2, :]
 
     n=1
     h = (tf - t0)/N
@@ -65,4 +67,4 @@ while a <= 1.131:
     a+=0.001
 
 #Denna beräknings syfte var att ta fram en "skiss" på hur integralen beter sig efter olika a. Vi kan konstatera att det finns två värden på a där arean blir 20 där både värdena på a är över 1.
-#samt vet vi vad tf är med 14 decimalers säkerhet som är lika i både fallen, samt att N=1024 är rimligt å både fallen
+#samt vet vi vad tf är för varje a, N i det här fallet är beroende på vad vi använder som startgissning tf, så man kan gå tillbaks till uppgift 5 och munellt testa de a vi har fått och få att 1024 är rimligt för både

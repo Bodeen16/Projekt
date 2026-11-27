@@ -13,8 +13,8 @@ U0 = np.array([x0, y0, theta0])
 
 
 t0 = 0 
-tf = 30
-a = 1
+tf = 74
+a = 1.123
 
 
 J0 = sp.special.j0(2*a)
@@ -38,12 +38,12 @@ y = U[1, :]
 theta = U[2, :]
 
 plt.figure()
-robot.animate(x, y, theta)
 
 plt.plot(x, y)
 plt.axis("equal")
 plt.grid(True)
 plt.show()
+robot.animate(x, y, theta)
 
 #Uppgift a; 
 for i in range(1, len(x)):

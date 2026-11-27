@@ -98,14 +98,14 @@ while 1024 >= N:
         #print("Framåt Euler:","N =", N, "kvot =", kvot, "p =", p)
 
     N = N*2
-
+"""
 plt.figure()
 plt.loglog(h_list, err_list)
 plt.xlabel("h")
 plt.ylabel("err_max")
 plt.grid()
 plt.show()
-
+"""
 # h = (tf - t0)/N, så h halveras alltså när N fördubblas. 
 # I loglog-plotten ligger felet på en rät linje med lutning 1 (d.v.s. p = 1) alltså noggrannhetsordning 1
 # Stämmer dessutom överens med teorin då framåt Euler är en förstaordningsmetod.
@@ -159,14 +159,14 @@ while 1024 >= N:
         print("Runge-Kutta:", "N =", N, "kvot =", kvot, "p =", p)
 
     N = N*2
-
+"""
 plt.figure()
 plt.loglog(h_list, err_list)
 plt.xlabel("h")
 plt.ylabel("err_max")
 plt.grid()
 plt.show()
-
+"""
 
 # Vi ser från utskrift och plot att Runge-Kutta har noggrannhetsordning 4 (p = 4), vilket stämmer överens med teorin. 
 # Felet frö RK4 är därmed proportionellt mot h**4 (p = 4), medan felet för Euler är h (p = 1).
