@@ -73,7 +73,7 @@ while n < N:
 A = A + (x[0] * f(t[0], U[:, 0])[1] - y[0] * f(t[0], U[:, 0])[0]) * h / 2 \
       + (x[N] * f(t[N], U[:, N])[1] - y[N] * f(t[N], U[:, N])[0]) * h / 2
 
-print("Area:", abs(A) / 2)
+print("Area (a.e):", abs(A) / 2)
 
 #När vi ökar antalet steg kan vi återigen konstatera att de första 6 decimalerna är oförändrade.
 #Arean a blir: 13.546335
