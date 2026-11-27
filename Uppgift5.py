@@ -38,12 +38,12 @@ y = U[1, :]
 theta = U[2, :]
 
 plt.figure()
-
+robot.animate(x, y, theta)
 plt.plot(x, y)
 plt.axis("equal")
 plt.grid(True)
 plt.show()
-robot.animate(x, y, theta)
+
 
 #Uppgift a; 
 for i in range(1, len(x)):
