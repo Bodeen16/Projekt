@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import scipy as sp
 from Uppgift3 import rk4, odefun
 import robot 
-a=1
+a=1 # Vi gjorde en tidigare kontroll och kom fram till att a var över 1 för båda lösningar. a = 1 har vi satt för att få färre iterationer.
 while a <= 1.131:
     b = 1
     x0 = 0

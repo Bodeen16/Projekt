@@ -20,7 +20,10 @@ def compute_area(a, N, b, t0,tf):
         if x[i-1] < 0 and x[i] >= 0:
             tf = t[i - 1] + (0 - x[i - 1]) * (t[i]- t[i -1]) / (x[i] - x[i - 1])
             break
-    
+
+    t, U = rk4(f, t0, tf, U0, N)
+    x = U[0, :]
+    y = U[1, :]
 
     U0 = np.array([0, 0, 0])
 
@@ -61,7 +64,7 @@ N = 1024
 Area = 20
 tol = 1e-9
 delta = 1e-7
-tf1 = 36  #36 för a=1.04, 74 för a=1.123
+tf1 = 37  #36 för a=1.04, 74 för a=1.123
 tf2 = 74 
 a_start1 = 1.04 #startgissning 1.04 & 1.12
 a_start2 = 1.12
@@ -92,3 +95,9 @@ for a, tf in [(a_lös1, tf1), (a_lös2, tf2)]:
     plt.axis("equal")
     plt.grid(True)
     plt.show()
+
+#Kontrollering av att a har 6 korrekta decimaler 
+for N in [1024, 2048, 4096, 8192]:
+    a1, _ = newtons_metod(a_start1, N, Area, tol, 1e-7, tf1)
+    a2, _ = newtons_metod(a_start2, N, Area, tol, 1e-7, tf2)
+    print("N =", N, " a1 =", a1, " a2 =", a2)
