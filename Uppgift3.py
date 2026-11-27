@@ -65,13 +65,13 @@ x = U[0, :]
 y = U[1, :]
 theta = U[2, :]
 
-plt.figure()
+"""plt.figure()
 robot.animate(x, y, theta)
 
 plt.plot(x, y)
 plt.axis("equal")
 plt.grid(True)
-plt.show()
+plt.show()"""
 
 
 

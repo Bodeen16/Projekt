@@ -1,81 +1,60 @@
 import numpy as np
-import matplotlib.pyplot as plt 
 import scipy as sp
 from Uppgift3 import rk4, odefun
-import robot 
 
 
+def compute_area(a, N, b, t0, tf):
+    J0 = 3 * sp.special.j0(2 * a)
+    g = lambda t: a * np.sin(J0 * t)
+    vL = lambda t: np.cos(g(t)) ** 2
+    vR = lambda t: np.sin(g(t)) ** 2
+    f = lambda t, U: odefun(t, U, b, vL, vR)
 
-def compute_area(N, x, y, f, h):
-    n=1
-    A=0
-    while n < N:
-        A = A + (x[n]*f(t[n], U[:, n])[1] - y[n]*f(t[n], U[:,n])[0])*h    
-        n = n +1
+    U0 = np.array([0, 0, 0])
+    t, U = rk4(f, t0, tf, U0, N)
 
-    A = A + (x[0] * f(t[0], U[:, 0])[1] - y[0] * f(t[0], U[:, 0])[0]) * h / 2 \
-        + (x[N] * f(t[N], U[:, N])[1] - y[N] * f(t[N], U[:, N])[0]) * h / 2
-    return A
+    x = U[0, :]
+    y = U[1, :]
+    h = (tf - t0) / N
 
-def Der_compute_area(N, x, y, f, h):
-    n=1
-    dA=0
-    while n < N:
-        dA = dA + (x[n]*acc(t[n], U[:, n])[1] - y[n]*acc(t[n], U[:,n])[0])*h    
-        n = n +1
+    A = 0
+    for n in range(1, N):
+        A += (x[n] * f(t[n], U[:, n])[1] - y[n] * f(t[n], U[:, n])[0]) * h
 
-    dA = dA + (x[0] * acc(t[0], U[:, 0])[1] - y[0] * acc(t[0], U[:, 0])[0]) * h / 2 \
-        + (x[N] * acc(t[N], U[:, N])[1] - y[N] * acc(t[N], U[:, N])[0]) * h / 2
-    return dA
-        
-     
+    A += (x[0] * f(t[0], U[:, 0])[1] - y[0] * f(t[0], U[:, 0])[0]) * h / 2
+    A += (x[N] * f(t[N], U[:, N])[1] - y[N] * f(t[N], U[:, N])[0]) * h / 2
 
-def acceleration(t, U, b, vL, vR, aL, aR, n):
-    theta = U[2]
-
-    ax = (aL(t) + aR(t))/2 * np.sin(theta) +(vR(t)+vL(t))/2 * np.cos(theta)*f(t, U)[2]
-    ay = (aL(t) + aR(t))/2 * np.cos(theta) +(vR(t)+vL(t))/2 *-np.sin(theta)*f(t, U)[2]
-
-    return np.array([ax, ay])
+    return np.abs(0.5 * A)
 
 
-g = lambda t: a * np.sin(3*sp.special.j0(2*a)*t)
-dg = lambda t: a* np.cos(3*sp.special.j0(2*a)*t)*3*sp.special.j0(2*a)
+def newtons_metod(a_start, N, Area, tol, delta):
+    a = a_start
+    diff = 1
+    it = 0
 
-vL = lambda t: np.cos(g(t))**2
-vR = lambda t: np.sin(g(t))**2
-aL = lambda t: 2*np.cos(g(t))*-np.sin(g(t))*dg(t)
-aR = lambda t: 2*np.sin(g(t))* np.cos(g(t))*dg(t)
+    while diff > tol and it < 50:
+        F = compute_area(a, N, b, t0, tf) - Area
+        dF = (compute_area(a + delta, N, b, t0, tf) - compute_area(a - delta, N, b, t0, tf)) / (2 * delta) #framtagen med central differens
 
-f = lambda t, U: odefun(t, U, b, vL, vR)
+        newa = a - (F/dF)
+        diff = np.abs(newa - a)
+        a = newa
+        it += 1
+        print("it:", it, "a:", a, "diff:", diff)
 
-acc = lambda t, U: acceleration(t, U, b, vL, vR, aL, aR, n)
- #kan behöva flytta in
+    return a
 
-b = 1
-a = 1.04
-x0 = 0
-y0 = 0
-theta0 = 0
-U0 = np.array([x0, y0, theta0])
-N=1024
+b=1
 t0=0
-tf= 29.91012112737822
-t, U = rk4(f, t0, tf, U0, N)
+tf=29.91012112737822
+N=1024
+Area=20
+tol=1e-9
+delta=1e-6
+a_start = 1.04 #1.04 & 1.08
 
-x = U[0, :]
-y = U[1, :]
 
-h = (tf - t0)/N
+a_lös = newtons_metod(a_start, N, Area, tol, delta)
 
-
-tol = 1e-7
-it = 0
-diff = 1 
-
-while diff > tol:
-    newa = a - (compute_area(N, x, y, f, h)/Der_compute_area(N, x, y, f, h))
-    diff = np.abs(newa - a)
-    a = newa
-    it += 1
-    print(it, a, diff)
+#lösningarna blir 1.0823785863500923 & 1.0445636565833785
+#Felkällorna vi har är båd enär vi räknar ut arean med trapezmetoden och att vi använder central differens för att beräkna derivatan eftersom både är approximationer.
